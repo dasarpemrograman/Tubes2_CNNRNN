@@ -96,10 +96,6 @@ def build_intel_dataset_index(
     class_names: Sequence[str] = INTEL_CLASS_NAMES,
 ) -> list[IntelDatasetRow]:
     """Build an index for Intel Image Classification folders.
-
-    Expected split folders are commonly named ``seg_train``, ``seg_test``, and
-    optionally ``seg_pred``. Only labeled class subfolders are indexed, so
-    ``seg_pred`` is skipped unless it contains the expected class directories.
     """
     root = Path(dataset_root)
     if not root.is_dir():
@@ -108,8 +104,7 @@ def build_intel_dataset_index(
     label_to_id = build_label_mapping(class_names)
     rows: list[IntelDatasetRow] = []
 
-    for split_dir in _iter_split_dirs(root):
-        split_name = split_dir.name
+    for split_name, split_dir in _find_labeled_split_dirs(root, class_names):
         for label_name, label_id in label_to_id.items():
             label_dir = split_dir / label_name
             if not label_dir.is_dir():
@@ -128,7 +123,7 @@ def build_intel_dataset_index(
         expected = ", ".join(class_names)
         raise ValueError(
             f"No labeled Intel images found under {root}. "
-            f"Expected split folders containing class folders: {expected}."
+            f"Expected train/test folders containing class folders: {expected}."
         )
 
     return rows
@@ -161,12 +156,35 @@ def build_and_save_intel_index(
     return rows
 
 
-def _iter_split_dirs(dataset_root: Path) -> list[Path]:
-    preferred_names = ("seg_train", "seg_test", "seg_pred", "train", "val", "valid", "test")
-    preferred = [dataset_root / name for name in preferred_names if (dataset_root / name).is_dir()]
-    if preferred:
-        return preferred
-    return [path for path in sorted(dataset_root.iterdir()) if path.is_dir()]
+def _find_labeled_split_dirs(
+    dataset_root: Path,
+    class_names: Sequence[str],
+) -> list[tuple[str, Path]]:
+    candidates = [
+        ("train", dataset_root / "seg_train"),
+        ("train", dataset_root / "seg_train" / "seg_train"),
+        ("train", dataset_root / "train"),
+        ("train", dataset_root / "train" / "train"),
+        ("test", dataset_root / "seg_test"),
+        ("test", dataset_root / "seg_test" / "seg_test"),
+        ("test", dataset_root / "test"),
+        ("test", dataset_root / "test" / "test"),
+    ]
+
+    split_dirs: list[tuple[str, Path]] = []
+    seen: set[Path] = set()
+    for split_name, candidate in candidates:
+        resolved = candidate.resolve()
+        if resolved in seen:
+            continue
+        if candidate.is_dir() and _has_class_dirs(candidate, class_names):
+            split_dirs.append((split_name, candidate))
+            seen.add(resolved)
+    return split_dirs
+
+
+def _has_class_dirs(path: Path, class_names: Sequence[str]) -> bool:
+    return any((path / class_name).is_dir() for class_name in class_names)
 
 
 def _iter_image_files(directory: Path) -> list[Path]:
