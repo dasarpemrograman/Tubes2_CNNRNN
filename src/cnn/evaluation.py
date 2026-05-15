@@ -126,11 +126,14 @@ def run_shared_vs_non_shared(
     max_test_samples: int | None = None,
     force: bool = False,
 ) -> dict[str, object]:
-    shared_best = get_best_shared_result(artifacts_dir, model_id)
-    shared_model_id = str(shared_best["model_id"])
+    shared_model_id = model_id if model_id is not None else str(get_best_shared_result(artifacts_dir)["model_id"])
     shared_config = get_required_config(shared_model_id)
+    shared_best = get_shared_training_result(artifacts_dir, shared_model_id)
+    shared_best["model_id"] = shared_model_id
     non_shared_id = f"{shared_model_id}_non_shared"
     non_shared_config = config_with_model_id(shared_config, non_shared_id)
+    print(f"Selected shared_model_id: {shared_model_id}")
+    print(f"Selected non_shared_model_id: {non_shared_id}")
 
     effective_image_size = image_size or (int(shared_best["image_height"]), int(shared_best["image_width"]))
     examples = read_dataset_index(dataset_index)
@@ -182,10 +185,7 @@ def run_shared_vs_non_shared(
 
 def get_best_shared_result(artifacts_dir: Path, model_id: str | None = None) -> dict[str, Any]:
     if model_id is not None:
-        metric_path = artifacts_dir / "metrics" / f"{model_id}.json"
-        if not metric_path.is_file():
-            raise FileNotFoundError(f"Metric file not found for model {model_id}: {metric_path}")
-        return read_json(metric_path)
+        return get_shared_training_result(artifacts_dir, model_id)
 
     best_path = artifacts_dir / "metrics" / "best_shared_conv2d.json"
     if best_path.is_file():
@@ -195,6 +195,30 @@ def get_best_shared_result(artifacts_dir: Path, model_id: str | None = None) -> 
     if not results:
         raise FileNotFoundError("No shared Conv2D metrics found. Train at least one config first.")
     return max(results, key=lambda row: float(row["test_macro_f1"]))
+
+
+def get_shared_training_result(artifacts_dir: Path, model_id: str) -> dict[str, Any]:
+    get_required_config(model_id)
+    metric_path = artifacts_dir / "metrics" / f"{model_id}.json"
+    if not metric_path.is_file():
+        raise FileNotFoundError(f"Metric file not found for model {model_id}: {metric_path}")
+
+    payload = read_json(metric_path)
+    required_fields = {
+        "parameter_count",
+        "validation_macro_f1",
+        "test_macro_f1",
+        "image_height",
+        "image_width",
+    }
+    missing = sorted(field for field in required_fields if field not in payload)
+    if missing:
+        raise ValueError(f"Metric file for {model_id} is not a training metric; missing: {missing}")
+    if payload.get("parameter_sharing", "shared") != "shared":
+        raise ValueError(f"Metric file for {model_id} is not a shared Conv2D result.")
+    payload["model_id"] = model_id
+    payload.setdefault("parameter_sharing", "shared")
+    return payload
 
 
 def get_required_config(model_id: str):
