@@ -1,0 +1,3 @@
+filepath,split,label_name,label_id,predicted_label_id,predicted_label_name,confidence
+D:\JELITA\182-6\ML\Tubes 2\Tubes2_CNNRNN\data\intel_Image_classification\seg_train\buildings\0.jpg,seg_train,buildings,0,3,mountain,0.221250981092453
+D:\JELITA\182-6\ML\Tubes 2\Tubes2_CNNRNN\data\intel_Image_classification\seg_train\buildings\10006.jpg,seg_train,buildings,0,3,mountain,0.19768483936786652

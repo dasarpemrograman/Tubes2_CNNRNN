@@ -1,0 +1,3 @@
+filepath,split,label_name,label_id,keras_predicted_label_id,keras_predicted_label_name,keras_confidence,scratch_predicted_label_id,scratch_predicted_label_name,scratch_confidence,predictions_match
+D:\JELITA\182-6\ML\Tubes 2\Tubes2_CNNRNN\data\intel_Image_classification\seg_test\street\20972.jpg,seg_test,street,5,5,street,0.9961894154548645,5,street,0.9961894154548645,1
+D:\JELITA\182-6\ML\Tubes 2\Tubes2_CNNRNN\data\intel_Image_classification\seg_test\forest\20225.jpg,seg_test,forest,1,1,forest,1.0,1,forest,1.0,1

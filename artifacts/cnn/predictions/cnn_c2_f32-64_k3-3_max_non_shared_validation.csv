@@ -1,0 +1,7 @@
+filepath,split,label_name,label_id,predicted_label_id,predicted_label_name,confidence
+D:\JELITA\182-6\ML\Tubes 2\Tubes2_CNNRNN\data\intel_Image_classification\seg_train\glacier\4182.jpg,seg_train,glacier,2,5,street,0.1749049574136734
+D:\JELITA\182-6\ML\Tubes 2\Tubes2_CNNRNN\data\intel_Image_classification\seg_train\buildings\19089.jpg,seg_train,buildings,0,5,street,0.17531771957874298
+D:\JELITA\182-6\ML\Tubes 2\Tubes2_CNNRNN\data\intel_Image_classification\seg_train\forest\13921.jpg,seg_train,forest,1,5,street,0.17118631303310394
+D:\JELITA\182-6\ML\Tubes 2\Tubes2_CNNRNN\data\intel_Image_classification\seg_train\street\16903.jpg,seg_train,street,5,5,street,0.17378874123096466
+D:\JELITA\182-6\ML\Tubes 2\Tubes2_CNNRNN\data\intel_Image_classification\seg_train\sea\193.jpg,seg_train,sea,4,5,street,0.1749074012041092
+D:\JELITA\182-6\ML\Tubes 2\Tubes2_CNNRNN\data\intel_Image_classification\seg_train\mountain\12496.jpg,seg_train,mountain,3,5,street,0.1747865229845047

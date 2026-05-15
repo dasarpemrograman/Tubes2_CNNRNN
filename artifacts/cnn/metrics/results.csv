@@ -1,0 +1,3 @@
+model_id,parameter_sharing,parameter_count,validation_macro_f1,test_macro_f1,train_samples,validation_samples,test_samples,epochs,image_height,image_width,batch_size
+cnn_c2_f32-64_k3-3_max,shared,11235142,0.7845999536692188,0.7921150917446039,11227,2807,3000,10,150,150,32
+cnn_c2_f32-64_k3-3_max,shared,2117446,0.7218018292344838,0.7168424412048072,11227,2807,3000,1,64,64,8

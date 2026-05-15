@@ -1,0 +1,10 @@
+{
+  "non_shared_model_id": "cnn_c2_f32-64_k3-3_max_non_shared",
+  "non_shared_parameter_count": 6177670,
+  "non_shared_test_macro_f1": 0.2222222222222222,
+  "non_shared_validation_macro_f1": 0.047619047619047616,
+  "shared_model_id": "cnn_c2_f32-64_k3-3_max",
+  "shared_parameter_count": 11235142,
+  "shared_test_macro_f1": 0.7921150917446039,
+  "shared_validation_macro_f1": 0.7845999536692188
+}

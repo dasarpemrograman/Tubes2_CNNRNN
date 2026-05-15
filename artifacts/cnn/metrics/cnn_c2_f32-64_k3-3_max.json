@@ -1,0 +1,14 @@
+{
+  "batch_size": 8,
+  "epochs": 1,
+  "image_height": 64,
+  "image_width": 64,
+  "model_id": "cnn_c2_f32-64_k3-3_max",
+  "parameter_count": 2117446,
+  "parameter_sharing": "shared",
+  "test_macro_f1": 0.7168424412048072,
+  "test_samples": 3000,
+  "train_samples": 11227,
+  "validation_macro_f1": 0.7218018292344838,
+  "validation_samples": 2807
+}
