@@ -3,12 +3,12 @@
   "epochs": 5,
   "image_height": 64,
   "image_width": 64,
-  "model_id": "cnn_c3_f64-128-256_k3-3-3_max",
-  "parameter_count": 2468870,
+  "model_id": "cnn_c2_f32-64_k5-3_max",
+  "parameter_count": 2118982,
   "parameter_sharing": "shared",
-  "test_macro_f1": 0.8097037300279805,
+  "test_macro_f1": 0.7652231593425998,
   "test_samples": 3000,
   "train_samples": 11227,
-  "validation_macro_f1": 0.8103508031086354,
+  "validation_macro_f1": 0.7733390620973277,
   "validation_samples": 2807
 }

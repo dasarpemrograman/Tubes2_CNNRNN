@@ -1,0 +1,9 @@
+{
+  "keras_macro_f1": 0.8097037300279805,
+  "max_probability_abs_diff": 1.3113021850585938e-06,
+  "model_id": "cnn_c3_f64-128-256_k3-3-3_max",
+  "prediction_matches": 3000,
+  "prediction_mismatches": 0,
+  "scratch_macro_f1": 0.8097037300279805,
+  "total_examples": 3000
+}
