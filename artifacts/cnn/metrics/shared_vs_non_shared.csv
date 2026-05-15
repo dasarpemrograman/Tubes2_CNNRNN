@@ -1,2 +1,0 @@
-shared_model_id,non_shared_model_id,shared_test_macro_f1,non_shared_test_macro_f1,shared_parameter_count,non_shared_parameter_count,shared_validation_macro_f1,non_shared_validation_macro_f1
-cnn_c2_f32-64_k3-3_max,cnn_c2_f32-64_k3-3_max_non_shared,0.7921150917446039,0.2222222222222222,11235142,6177670,0.7845999536692188,0.047619047619047616

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 from pathlib import Path
 from typing import Any, Sequence
 
@@ -171,16 +172,42 @@ def run_shared_vs_non_shared(
     comparison = {
         "shared_model_id": shared_model_id,
         "non_shared_model_id": non_shared_id,
-        "shared_test_macro_f1": float(shared_best["test_macro_f1"]),
-        "non_shared_test_macro_f1": float(non_shared_result["test_macro_f1"]),
         "shared_parameter_count": int(shared_best["parameter_count"]),
         "non_shared_parameter_count": int(non_shared_result["parameter_count"]),
+        "shared_test_macro_f1": float(shared_best["test_macro_f1"]),
+        "non_shared_test_macro_f1": float(non_shared_result["test_macro_f1"]),
         "shared_validation_macro_f1": float(shared_best["validation_macro_f1"]),
         "non_shared_validation_macro_f1": float(non_shared_result["validation_macro_f1"]),
     }
-    write_json(artifacts_dir / "metrics" / "shared_vs_non_shared.json", comparison)
-    write_results_csv([comparison], artifacts_dir / "metrics" / "shared_vs_non_shared.csv")
+    save_shared_vs_non_shared_metrics(artifacts_dir, comparison)
     return comparison
+
+
+def save_shared_vs_non_shared_metrics(
+    artifacts_dir: Path,
+    comparison: dict[str, object],
+) -> None:
+    required_fields = {
+        "shared_model_id",
+        "non_shared_model_id",
+        "shared_parameter_count",
+        "non_shared_parameter_count",
+        "shared_test_macro_f1",
+        "non_shared_test_macro_f1",
+    }
+    missing = sorted(field for field in required_fields if field not in comparison)
+    if missing:
+        raise ValueError(f"Shared vs non-shared comparison is missing fields: {missing}")
+
+    metrics_dir = artifacts_dir / "metrics"
+    metrics_dir.mkdir(parents=True, exist_ok=True)
+    json_path = metrics_dir / "shared_vs_non_shared.json"
+    csv_path = metrics_dir / "shared_vs_non_shared.csv"
+
+    json_path.write_text(json.dumps(comparison, indent=2, sort_keys=True), encoding="utf-8")
+    write_results_csv([comparison], csv_path)
+    print(f"Saved shared-vs-non-shared metrics JSON: {json_path}")
+    print(f"Saved shared-vs-non-shared metrics CSV: {csv_path}")
 
 
 def get_best_shared_result(artifacts_dir: Path, model_id: str | None = None) -> dict[str, Any]:
