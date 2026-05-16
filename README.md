@@ -1,108 +1,48 @@
 # Tubes2_CNNRNN
 
-CNN and RNN/LSTM image learning project for Tubes 2. The repository is managed
-with `uv`; the authoritative dependency files are `pyproject.toml` and
-`uv.lock`.
+Tugas Besar 2 IF3270 Pembelajaran Mesin — Implementasi Convolutional Neural Network (CNN) dan Recurrent Neural Network (SimpleRNN & LSTM) dari scratch menggunakan NumPy, serta pelatihan model menggunakan Keras/TensorFlow.
+
+- **CNN**: Klasifikasi citra pada dataset Intel Image Classification (6 kelas) dengan variasi hyperparameter (jumlah layer, filter, kernel, pooling) dan perbandingan shared vs non-shared parameter.
+- **RNN/LSTM**: Image captioning pada dataset Flickr8k menggunakan arsitektur encoder-decoder (InceptionV3 + SimpleRNN/LSTM) dengan evaluasi BLEU-4, METEOR, analisis kualitatif, dan uji kecepatan inferensi.
 
 ## Setup
 
-Install `uv`, then run all commands from the repository root.
+Install [uv](https://docs.astral.sh/uv/), lalu:
 
 ```powershell
 uv sync
 ```
 
-The project targets Python 3.11 through `.python-version`.
+Requires Python 3.11 (set via `.python-version`).
 
-## Repository Layout
+## Menjalankan Program
 
-```text
-src/common/       shared paths, I/O, logging, plotting, seed utilities
-src/cnn/          CNN implementation owned by Person A
-src/captioning/   RNN/LSTM image captioning implementation owned by Person B
-src/scratch/      from-scratch forward propagation and bonus backward work
-src/experiments/  experiment orchestration
-src/notebooks/    testing notebooks
-artifacts/        generated results, metrics, figures, and bonus outputs
-scripts/          repo audit and report-support tooling
-doc/report.pdf    final Google Docs PDF export only
-```
-
-`doc/` must contain exactly one file: `report.pdf`. Do not store report source
-files, figures, or drafts in `doc/`.
-
-## Data Placement
-
-Keep datasets out of git. Use `data/` or `datasets/` locally for Intel Image
-Classification and Flickr8k files, then write generated indexes and experiment
-outputs to `artifacts/`.
-
-## Standard Commands
+Seluruh eksperimen dan evaluasi dilakukan melalui Jupyter Notebook:
 
 ```powershell
-uv sync
-uv run python scripts/audit_artifacts.py
-uv run python scripts/generate_report_tables.py artifacts/cnn/results.csv artifacts/captioning/results.csv
-uv run python scripts/validate_figures.py artifacts/cnn artifacts/captioning artifacts/bonus
-uv run pytest
 uv run jupyter lab
 ```
 
-## CNN Commands
+Buka notebook berikut:
 
-Placeholders for Person A to replace with final script paths:
-
-```powershell
-uv run python -m experiments.train_cnn
-uv run python -m experiments.evaluate_cnn
-uv run python -m scratch.cnn_inference
-```
-
-## RNN/LSTM Captioning Commands
-
-Placeholders for Person B to replace with final script paths:
-
-```powershell
-uv run python -m experiments.train_captioning
-uv run python -m experiments.evaluate_captioning
-uv run python -m scratch.captioning_inference
-```
-
-## Bonus Commands
-
-Placeholders for bonus work:
-
-```powershell
-uv run python -m experiments.cnn_feature_maps
-uv run python -m experiments.cnn_grad_cam
-uv run python -m experiments.cnn_batch_inference
-uv run python -m experiments.cnn_gradient_check
-uv run python -m experiments.captioning_beam_search
-uv run python -m experiments.captioning_batch_inference
-uv run python -m experiments.captioning_gradient_check
-```
-
-## Report
-
-The report is authored in Google Docs outside this repository and exported to
-`doc/report.pdf` for submission. Required Google Docs sections include cover,
-problem description, implementation explanation, class/attribute/method
-explanation, CNN/RNN/LSTM forward propagation, required results, bonus,
-conclusion, task division, references, and AI usage form.
-
-## Task Division
-
-| Person | Ownership |
+| Notebook | Deskripsi |
 | --- | --- |
-| Person A | CNN track |
-| Person B | RNN/LSTM image captioning track |
-| Person C | Repo setup, uv tooling, audits, README, Google Docs coordination, release, compliance, submission |
+| `src/notebooks/CNN_Training_Experiment_and_Evaluations.ipynb` | Training 16 konfigurasi CNN, evaluasi Keras vs scratch, shared vs non-shared parameter |
+| `src/rnn/notebooks/evaluation.ipynb` | Evaluasi RNN/LSTM image captioning (kurva pembelajaran, BLEU-4/METEOR, analisis kualitatif, inference time, eksperimen max-length) |
 
-## Compliance Checklist
+## Penempatan Data
 
-- No plagiarism.
-- Responsible AI use only.
-- No cross-group collaboration.
-- Group has exactly 3 people.
-- Group is not cross-class.
-- Smallest NIM member submits the GitHub link to Edunex before 15 May 2026.
+Dataset tidak di-commit ke git. Letakkan secara lokal:
+
+- Intel Image Classification → `data/intel_image_classification/`
+- Flickr8k → `data/` (images + annotation files)
+
+Artifact hasil training (index, features, model weights, metrics) disimpan di `artifacts/`.
+
+## Pembagian Tugas
+
+| NIM | Nama | Kontribusi |
+| --- | --- | --- |
+| 18223009 | Muhammad Faiz Alfikrona | Pengisian laporan forward propagation LSTM dan implementasi RNN/LSTM. Setup repositori (GitHub, pyproject.toml, uv, ruff, pytest). Perancangan struktur direktori modular. Implementasi modul utilitas bersama (`src/common/`). Skrip validasi dan otomatisasi. Unit test awal. Penyusunan README dan .gitignore. |
+| 18223025 | Muhammad Azzam Robbani | Implementasi from scratch dan eksperimen SimpleRNN & LSTM. Pipeline data generator (vocabulary, tokenization, ekstraksi fitur InceptionV3). Skrip pelatihan model Keras dan kelas dekoder utama (`ImageCaptionerScratch`). Optimasi layer NumPy dan stabilitas numerik. Notebook evaluasi RNN/LSTM. Penyusunan laporan (deskripsi persoalan, forward propagation, analisis hasil). |
+| 18223101 | Ni Made Sekar Jelita Parameswari | Implementasi from scratch dan eksperimen CNN. Layer CNN NumPy (Conv2D, LocallyConnected2D, Pooling, Dense, dll). Pipeline preprocessing dan konfigurasi multi-eksperimen. Modul evaluasi (agregasi, Keras vs scratch, shared vs non-shared). Notebook eksperimen CNN. Dokumentasi teknis modul CNN untuk laporan. |
