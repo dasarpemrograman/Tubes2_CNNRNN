@@ -14,7 +14,3 @@ artifacts/**/*.h5
 artifacts/**/*.keras
 artifacts/**/*.npy
 artifacts/**/*.npz
-
-# Keep the submitted report PDF only.
-doc/*
-!doc/report.pdf
